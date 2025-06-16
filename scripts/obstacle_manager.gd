@@ -11,6 +11,9 @@ extends Node
 @onready var spawn_timer := $SpawnTimer
 
 signal player_collided_with_obstacle
+signal point_scored
+
+var horizontal_scroll_speed := 0.0
 
 # ---------------------------------------------------------------------------
 
@@ -25,16 +28,22 @@ func start_playing() -> void:
 
 # ---------------------------------------------------------------------------
 
+func set_horizontal_scroll_speed(speed: float):
+	horizontal_scroll_speed = speed
+
+# ---------------------------------------------------------------------------
+
 func spawn_obstacle() -> void:
 	var initial_position := Vector2(
 		spawn_point.global_position.x,
 		randi_range(highest_spawn_point.global_position.y, lowest_spawn_point.global_position.y)
 	)
-	var initial_velocity := Vector2(-200, 0)
+	var initial_velocity := Vector2(horizontal_scroll_speed, 0)
 	
 	var new_obstacle = obstacle_scene.instantiate() as Obstacle
 	new_obstacle.initialize(initial_position, initial_velocity, destroy_point.global_position.x)
 	new_obstacle.collided_with_player.connect(_on_player_collided_with_obstacle)
+	new_obstacle.point_scored.connect(func(): point_scored.emit())
 	
 	obstacles_node.add_child(new_obstacle)
 
@@ -46,10 +55,15 @@ func _on_spawn_timer_timeout() -> void:
 # ---------------------------------------------------------------------------
 
 func _on_player_collided_with_obstacle() -> void:
+	stop_moving_and_spawning_obstacles()
+	
+	player_collided_with_obstacle.emit()
+
+# ---------------------------------------------------------------------------
+
+func stop_moving_and_spawning_obstacles() -> void:
 	spawn_timer.stop()
 	
 	for obstacles_child_node in obstacles_node.get_children():
 		var obstacle := obstacles_child_node as Obstacle
 		obstacle.stop_movement()
-	
-	player_collided_with_obstacle.emit()

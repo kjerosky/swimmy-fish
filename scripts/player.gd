@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal player_hit_floor_during_play
+
 const SWIM_UP_VELOCITY = -600.0
 
 enum PlayerState {
@@ -36,7 +38,9 @@ func _physics_process(delta: float) -> void:
 		PlayerState.DEAD:
 			pass # nothing to do for now
 	
-	move_and_slide()
+	var hit_floor := move_and_slide()
+	if hit_floor and state == PlayerState.PLAYING:
+		player_hit_floor_during_play.emit()
 
 # ---------------------------------------------------------------------------
 

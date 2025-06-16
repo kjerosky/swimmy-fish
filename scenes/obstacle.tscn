@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxmb6m6by2ds8"]
+
+[ext_resource type="Texture2D" uid="uid://jadfi8hsi66o" path="res://icon.svg" id="1_7ukg5"]
+[ext_resource type="Script" uid="uid://cwe1y6hbsi3kj" path="res://scripts/obstacle.gd" id="1_drdry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drdry"]
+size = Vector2(126, 500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ukg5"]
+size = Vector2(20, 426.16)
+
+[node name="Obstacle" type="Node2D"]
+script = ExtResource("1_drdry")
+
+[node name="UpperPart" type="StaticBody2D" parent="."]
+position = Vector2(0, -410)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperPart"]
+shape = SubResource("RectangleShape2D_drdry")
+
+[node name="Sprite2D" type="Sprite2D" parent="UpperPart/CollisionShape2D"]
+scale = Vector2(0.981, 3.897)
+texture = ExtResource("1_7ukg5")
+
+[node name="LowerPart" type="StaticBody2D" parent="."]
+position = Vector2(0, 410)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerPart"]
+shape = SubResource("RectangleShape2D_drdry")
+
+[node name="Sprite2D" type="Sprite2D" parent="LowerPart/CollisionShape2D"]
+scale = Vector2(0.981, 3.897)
+texture = ExtResource("1_7ukg5")
+
+[node name="PointGate" type="Area2D" parent="."]
+position = Vector2(74, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PointGate"]
+shape = SubResource("RectangleShape2D_7ukg5")
+
+[connection signal="body_entered" from="PointGate" to="." method="_on_point_gate_body_entered"]

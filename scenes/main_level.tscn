@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://csex1u5x0fnbm"]
+
+[ext_resource type="PackedScene" uid="uid://y67levvnbse5" path="res://scenes/player.tscn" id="1_v3uhd"]
+[ext_resource type="Script" uid="uid://t07enn2gu4xk" path="res://scripts/obstacle_manager.gd" id="2_6we3w"]
+[ext_resource type="PackedScene" uid="uid://cxmb6m6by2ds8" path="res://scenes/obstacle.tscn" id="2_ufxs0"]
+
+[node name="MainLevel" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_v3uhd")]
+position = Vector2(640, 360)
+
+[node name="ObstacleManager" type="Node" parent="."]
+script = ExtResource("2_6we3w")
+obstacle_scene = ExtResource("2_ufxs0")
+
+[node name="ObstacleSpawnPoint" type="Marker2D" parent="ObstacleManager"]
+position = Vector2(1354, 360)
+
+[node name="HighestSpawnPoint" type="Marker2D" parent="ObstacleManager/ObstacleSpawnPoint"]
+position = Vector2(0, -153)
+
+[node name="LowestSpawnPoint" type="Marker2D" parent="ObstacleManager/ObstacleSpawnPoint"]
+position = Vector2(0, 153)
+
+[node name="ObstacleDestroyPoint" type="Marker2D" parent="ObstacleManager"]
+position = Vector2(-143, 378)
+
+[node name="SpawnTimer" type="Timer" parent="ObstacleManager"]
+wait_time = 3.0
+
+[node name="Obstacles" type="Node" parent="ObstacleManager"]
+
+[connection signal="timeout" from="ObstacleManager/SpawnTimer" to="ObstacleManager" method="_on_spawn_timer_timeout"]

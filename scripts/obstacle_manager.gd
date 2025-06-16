@@ -10,9 +10,17 @@ extends Node
 @onready var obstacles_node := $Obstacles
 @onready var spawn_timer := $SpawnTimer
 
+signal player_collided_with_obstacle
+
 # ---------------------------------------------------------------------------
 
-func _ready() -> void:
+func restart() -> void:
+	for obstacle_node in obstacles_node.get_children():
+		obstacle_node.queue_free()
+
+# ---------------------------------------------------------------------------
+
+func start_playing() -> void:
 	spawn_timer.start()
 
 # ---------------------------------------------------------------------------
@@ -26,6 +34,7 @@ func spawn_obstacle() -> void:
 	
 	var new_obstacle = obstacle_scene.instantiate() as Obstacle
 	new_obstacle.initialize(initial_position, initial_velocity, destroy_point.global_position.x)
+	new_obstacle.collided_with_player.connect(_on_player_collided_with_obstacle)
 	
 	obstacles_node.add_child(new_obstacle)
 
@@ -33,3 +42,14 @@ func spawn_obstacle() -> void:
 
 func _on_spawn_timer_timeout() -> void:
 	spawn_obstacle()
+
+# ---------------------------------------------------------------------------
+
+func _on_player_collided_with_obstacle() -> void:
+	spawn_timer.stop()
+	
+	for obstacles_child_node in obstacles_node.get_children():
+		var obstacle := obstacles_child_node as Obstacle
+		obstacle.stop_movement()
+	
+	player_collided_with_obstacle.emit()

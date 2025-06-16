@@ -1,7 +1,12 @@
 class_name Obstacle
 extends Node2D
 
-@onready var point_gate_collider = $PointGate/CollisionShape2D
+@onready var upper_part_collider := $UpperPart/CollisionShape2D
+@onready var lower_part_collider := $LowerPart/CollisionShape2D
+@onready var point_gate_collider := $PointGate/CollisionShape2D
+
+signal point_scored
+signal collided_with_player
 
 var velocity := Vector2.ZERO
 var destruction_position_x := 0
@@ -36,6 +41,14 @@ func stop_movement() -> void:
 
 func _on_point_gate_body_entered(body: Node2D) -> void:
 	if body is Player:
-		pass#TODO signal point scored
+		point_scored.emit()
 		
 		point_gate_collider.set_deferred("disabled", true)
+
+# ---------------------------------------------------------------------------
+
+func _on_obstacle_part_body_entered(_body: Node2D) -> void:
+	upper_part_collider.set_deferred("disabled", true)
+	lower_part_collider.set_deferred("disabled", true)
+	
+	collided_with_player.emit()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxmb6m6by2ds8"]
 
-[ext_resource type="Texture2D" uid="uid://jadfi8hsi66o" path="res://icon.svg" id="1_7ukg5"]
 [ext_resource type="Script" uid="uid://cwe1y6hbsi3kj" path="res://scripts/obstacle.gd" id="1_drdry"]
+[ext_resource type="Texture2D" uid="uid://d2xki6dy3471j" path="res://assets/seaweed-obstacle.png" id="2_drdry"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drdry"]
 size = Vector2(126, 500)
@@ -21,8 +21,9 @@ collision_mask = 4
 shape = SubResource("RectangleShape2D_drdry")
 
 [node name="Sprite2D" type="Sprite2D" parent="UpperPart/CollisionShape2D"]
-scale = Vector2(0.981, 3.897)
-texture = ExtResource("1_7ukg5")
+position = Vector2(11, 0)
+texture = ExtResource("2_drdry")
+flip_v = true
 
 [node name="LowerPart" type="Area2D" parent="."]
 position = Vector2(0, 410)
@@ -33,8 +34,8 @@ collision_mask = 4
 shape = SubResource("RectangleShape2D_drdry")
 
 [node name="Sprite2D" type="Sprite2D" parent="LowerPart/CollisionShape2D"]
-scale = Vector2(0.981, 3.897)
-texture = ExtResource("1_7ukg5")
+position = Vector2(11, 0)
+texture = ExtResource("2_drdry")
 
 [node name="PointGate" type="Area2D" parent="."]
 position = Vector2(74, 0)

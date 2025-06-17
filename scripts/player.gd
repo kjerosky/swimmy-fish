@@ -1,13 +1,19 @@
 class_name Player
 extends CharacterBody2D
 
+@onready var sprite_and_collider := $CollisionShape2D
+
 signal player_hit_floor_during_play
 
-const SWIM_UP_VELOCITY = -600.0
+const SWIM_UP_VELOCITY := -600.0
+
+# The magic number here is just to make the visual rotation not so extreme.
+const VIRTUAL_HORIZONTAL_VELOCITY := -Constants.SCROLL_VELOCITY * 2.0
 
 enum PlayerState {
 	WAITING_TO_START,
 	PLAYING,
+	DYING,
 	DEAD,
 }
 
@@ -26,21 +32,33 @@ func _physics_process(delta: float) -> void:
 		get_tree().quit()
 	
 	velocity += get_gravity() * delta
+	var visual_direction := Vector2(VIRTUAL_HORIZONTAL_VELOCITY, velocity.y)
 	
 	match state:
 		PlayerState.WAITING_TO_START:
 			velocity = Vector2.ZERO
+			visual_direction = Vector2.RIGHT
 		
 		PlayerState.PLAYING:
 			if Input.is_action_just_pressed("swim"):
 				velocity.y = SWIM_UP_VELOCITY
 		
-		PlayerState.DEAD:
+		PlayerState.DYING:
 			pass # nothing to do for now
+		
+		PlayerState.DEAD:
+			visual_direction = Vector2.RIGHT
 	
 	var hit_floor := move_and_slide()
-	if hit_floor and state == PlayerState.PLAYING:
-		player_hit_floor_during_play.emit()
+	if hit_floor:
+		if state == PlayerState.PLAYING:
+			player_hit_floor_during_play.emit()
+		
+		if state == PlayerState.DYING:
+			visual_direction = Vector2.RIGHT
+			state = PlayerState.DEAD
+	
+	sprite_and_collider.rotation = atan2(visual_direction.y, visual_direction.x)
 
 # ---------------------------------------------------------------------------
 
@@ -57,5 +75,5 @@ func start_playing():
 # ---------------------------------------------------------------------------
 
 func die() -> void:
-	state = PlayerState.DEAD
+	state = PlayerState.DYING
 	velocity = Vector2.ZERO

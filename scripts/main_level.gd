@@ -5,7 +5,7 @@ extends Node2D
 @onready var scrolling_floor := $Floor
 @onready var player := $Player
 
-const MOVING_HORIZONTAL_SCROLL_SPEED := -200.0
+const MOVING_HORIZONTAL_SCROLL_SPEED := Constants.SCROLL_VELOCITY
 
 enum GameState {
 	WAITING_TO_START,
@@ -19,8 +19,6 @@ var current_score := 0
 # ---------------------------------------------------------------------------
 
 func _ready() -> void:
-	obstacle_manager.set_horizontal_scroll_speed(MOVING_HORIZONTAL_SCROLL_SPEED)
-	
 	restart()
 
 # ---------------------------------------------------------------------------

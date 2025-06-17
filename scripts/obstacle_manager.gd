@@ -13,8 +13,6 @@ extends Node
 signal player_collided_with_obstacle
 signal point_scored
 
-var horizontal_scroll_speed := 0.0
-
 # ---------------------------------------------------------------------------
 
 func restart() -> void:
@@ -28,17 +26,12 @@ func start_playing() -> void:
 
 # ---------------------------------------------------------------------------
 
-func set_horizontal_scroll_speed(speed: float):
-	horizontal_scroll_speed = speed
-
-# ---------------------------------------------------------------------------
-
 func spawn_obstacle() -> void:
 	var initial_position := Vector2(
 		spawn_point.global_position.x,
 		randi_range(highest_spawn_point.global_position.y, lowest_spawn_point.global_position.y)
 	)
-	var initial_velocity := Vector2(horizontal_scroll_speed, 0)
+	var initial_velocity := Vector2(Constants.SCROLL_VELOCITY, 0)
 	
 	var new_obstacle = obstacle_scene.instantiate() as Obstacle
 	new_obstacle.initialize(initial_position, initial_velocity, destroy_point.global_position.x)

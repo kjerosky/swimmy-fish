@@ -1,19 +1,42 @@
-[gd_scene load_steps=5 format=3 uid="uid://y67levvnbse5"]
+[gd_scene load_steps=8 format=3 uid="uid://y67levvnbse5"]
 
-[ext_resource type="Texture2D" uid="uid://jadfi8hsi66o" path="res://icon.svg" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://carue6oeab6d0" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://5iqa4w6ppjer" path="res://assets/clown-fish-sprite-sheet.png" id="2_g2els"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(74, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
+atlas = ExtResource("2_g2els")
+region = Rect2(148, 0, 74, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("2_g2els")
+region = Rect2(0, 0, 74, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_g2els")
+region = Rect2(74, 0, 74, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qhqgy"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_3vyb7")
+"texture": SubResource("AtlasTexture_qhqgy")
 }],
 "loop": true,
-"name": &"default",
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": true,
+"name": &"swim",
 "speed": 5.0
 }]
 
@@ -26,5 +49,6 @@ script = ExtResource("1_g2els")
 shape = SubResource("RectangleShape2D_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D"]
-scale = Vector2(0.578125, 0.25)
 sprite_frames = SubResource("SpriteFrames_qhqgy")
+animation = &"swim"
+autoplay = "swim"

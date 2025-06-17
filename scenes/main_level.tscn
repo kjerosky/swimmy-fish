@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://t07enn2gu4xk" path="res://scripts/obstacle_manager.gd" id="2_6we3w"]
 [ext_resource type="PackedScene" uid="uid://cxmb6m6by2ds8" path="res://scenes/obstacle.tscn" id="2_ufxs0"]
 [ext_resource type="Script" uid="uid://d3idap4b7gyw7" path="res://scripts/floor.gd" id="4_bq26l"]
-[ext_resource type="Texture2D" uid="uid://jadfi8hsi66o" path="res://icon.svg" id="5_8ra5a"]
+[ext_resource type="Texture2D" uid="uid://bntgebxiwc15w" path="res://assets/sea-floor.png" id="5_u2c82"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bq26l"]
 
@@ -39,30 +39,32 @@ collision_mask = 4
 script = ExtResource("4_bq26l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-position = Vector2(0, -32)
+position = Vector2(0, -10)
 shape = SubResource("WorldBoundaryShape2D_bq26l")
 
 [node name="Segment1" type="Node2D" parent="Floor"]
-position = Vector2(1344, 0)
+position = Vector2(1440, -15)
 
 [node name="Sprite2D" type="Sprite2D" parent="Floor/Segment1"]
+texture_filter = 1
 texture_repeat = 2
-position = Vector2(-672, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_8ra5a")
+position = Vector2(-720, 0)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("5_u2c82")
 region_enabled = true
-region_rect = Rect2(0, 0, 2688, 128)
+region_rect = Rect2(0, 0, 1152, 64)
 
 [node name="Segment2" type="Node2D" parent="Floor"]
-position = Vector2(2688, 0)
+position = Vector2(2880, -15)
 
 [node name="Sprite2D" type="Sprite2D" parent="Floor/Segment2"]
+texture_filter = 1
 texture_repeat = 2
-position = Vector2(-672, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_8ra5a")
+position = Vector2(-720, 0)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("5_u2c82")
 region_enabled = true
-region_rect = Rect2(0, 0, 2688, 128)
+region_rect = Rect2(0, 0, 1152, 64)
 
 [node name="Player" parent="." instance=ExtResource("1_v3uhd")]
 position = Vector2(640, 360)

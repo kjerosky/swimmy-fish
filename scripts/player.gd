@@ -1,14 +1,14 @@
 class_name Player
 extends CharacterBody2D
 
-@onready var sprite_and_collider := $CollisionShape2D
+@onready var sprite := $CollisionShape2D/AnimatedSprite2D
 
 signal player_hit_floor_during_play
 
 const SWIM_UP_VELOCITY := -600.0
 
 # The magic number here is just to make the visual rotation not so extreme.
-const VIRTUAL_HORIZONTAL_VELOCITY := -Constants.SCROLL_VELOCITY * 2.0
+const VIRTUAL_HORIZONTAL_VELOCITY := -Constants.SCROLL_VELOCITY * 4.0
 
 enum PlayerState {
 	WAITING_TO_START,
@@ -58,13 +58,14 @@ func _physics_process(delta: float) -> void:
 			visual_direction = Vector2.RIGHT
 			state = PlayerState.DEAD
 	
-	sprite_and_collider.rotation = atan2(visual_direction.y, visual_direction.x)
+	sprite.rotation = atan2(visual_direction.y, visual_direction.x)
 
 # ---------------------------------------------------------------------------
 
 func restart():
 	state = PlayerState.WAITING_TO_START
 	global_position = new_game_position
+	sprite.set_animation("swim")
 
 # ---------------------------------------------------------------------------
 
@@ -77,3 +78,4 @@ func start_playing():
 func die() -> void:
 	state = PlayerState.DYING
 	velocity = Vector2.ZERO
+	sprite.set_animation("dead")

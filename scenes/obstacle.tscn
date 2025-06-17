@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxmb6m6by2ds8"]
 
 [ext_resource type="Script" uid="uid://cwe1y6hbsi3kj" path="res://scripts/obstacle.gd" id="1_drdry"]
-[ext_resource type="Texture2D" uid="uid://d2xki6dy3471j" path="res://assets/seaweed-obstacle.png" id="2_drdry"]
+[ext_resource type="Texture2D" uid="uid://d2xki6dy3471j" path="res://assets/images/seaweed-obstacle.png" id="2_drdry"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drdry"]
 size = Vector2(126, 500)

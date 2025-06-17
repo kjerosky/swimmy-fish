@@ -1,12 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://csex1u5x0fnbm"]
+[gd_scene load_steps=12 format=3 uid="uid://csex1u5x0fnbm"]
 
 [ext_resource type="Script" uid="uid://codjxs568puuu" path="res://scripts/main_level.gd" id="1_qmak7"]
 [ext_resource type="PackedScene" uid="uid://y67levvnbse5" path="res://scenes/player.tscn" id="1_v3uhd"]
+[ext_resource type="AudioStream" uid="uid://c6nftinbmqrb6" path="res://assets/sounds/scored-point.wav" id="2_5fr2l"]
 [ext_resource type="Script" uid="uid://t07enn2gu4xk" path="res://scripts/obstacle_manager.gd" id="2_6we3w"]
-[ext_resource type="Texture2D" uid="uid://biriuau422fi6" path="res://assets/underwater-background.png" id="2_u2c82"]
+[ext_resource type="AudioStream" uid="uid://cpuejh4kslyhv" path="res://assets/sounds/dead.wav" id="2_k5pu3"]
+[ext_resource type="Texture2D" uid="uid://biriuau422fi6" path="res://assets/images/underwater-background.png" id="2_u2c82"]
 [ext_resource type="PackedScene" uid="uid://cxmb6m6by2ds8" path="res://scenes/obstacle.tscn" id="2_ufxs0"]
+[ext_resource type="AudioStream" uid="uid://dmp11gnet4k2w" path="res://assets/sounds/high-score.wav" id="3_2sb77"]
 [ext_resource type="Script" uid="uid://d3idap4b7gyw7" path="res://scripts/floor.gd" id="4_bq26l"]
-[ext_resource type="Texture2D" uid="uid://bntgebxiwc15w" path="res://assets/sea-floor.png" id="5_u2c82"]
+[ext_resource type="Texture2D" uid="uid://bntgebxiwc15w" path="res://assets/images/sea-floor.png" id="5_u2c82"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bq26l"]
 
@@ -80,6 +83,15 @@ region_rect = Rect2(0, 0, 1152, 64)
 
 [node name="Player" parent="." instance=ExtResource("1_v3uhd")]
 position = Vector2(640, 360)
+
+[node name="ScoredPointSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_5fr2l")
+
+[node name="HighScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2sb77")
+
+[node name="DeadSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_k5pu3")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

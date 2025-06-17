@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bntgebxiwc15w"
-path="res://.godot/imported/sea-floor.png-76aae44173b92160e95052414a778f59.ctex"
+uid="uid://d2xki6dy3471j"
+path="res://.godot/imported/seaweed-obstacle.png-39f0d7eb9e906b9d3aeb098858e5af46.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sea-floor.png"
-dest_files=["res://.godot/imported/sea-floor.png-76aae44173b92160e95052414a778f59.ctex"]
+source_file="res://assets/images/seaweed-obstacle.png"
+dest_files=["res://.godot/imported/seaweed-obstacle.png-39f0d7eb9e906b9d3aeb098858e5af46.ctex"]
 
 [params]
 

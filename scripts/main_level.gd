@@ -5,6 +5,9 @@ extends Node2D
 @onready var obstacle_manager := $ObstacleManager
 @onready var scrolling_floor := $Floor
 @onready var player := $Player
+@onready var scored_point_sound := $ScoredPointSound
+@onready var high_score_sound := $HighScoreSound
+@onready var dead_sound := $DeadSound
 @onready var pre_game_display := $CanvasLayer/PreGameDisplay
 @onready var in_game_display := $CanvasLayer/InGameDisplay
 @onready var current_score_label := $CanvasLayer/InGameDisplay/CurrentScore
@@ -35,10 +38,6 @@ func _ready() -> void:
 # ---------------------------------------------------------------------------
 
 func restart() -> void:
-	if current_score > high_score:
-		high_score = current_score
-		save_scores()
-	
 	state = GameState.WAITING_TO_START_GAME
 	current_score = 0
 	
@@ -93,22 +92,34 @@ func _on_player_player_hit_floor_during_play() -> void:
 # ---------------------------------------------------------------------------
 
 func stop_game() -> void:
+	dead_sound.play()
+	
 	is_parallax_scroll_on = false
 	obstacle_manager.stop_moving_and_spawning_obstacles()
 	scrolling_floor.set_horizontal_scroll_speed(0.0)
 	player.die()
 	
 	await get_tree().create_timer(2.0).timeout
-	
 	state = GameState.GAME_ENDED
+	
 	pre_game_display.visible = false
 	in_game_display.visible = false
 	post_game_display.visible = true
+	
+	if current_score > high_score:
+		high_score = current_score
+		save_scores()
 
 # ---------------------------------------------------------------------------
 
 func _on_point_scored() -> void:
 	current_score += 1
+	
+	if current_score == high_score + 1:
+		high_score_sound.play()
+	else:
+		scored_point_sound.pitch_scale = [0.8, 0.9, 1.0, 1.1, 1.2].pick_random()
+		scored_point_sound.play()
 
 # ---------------------------------------------------------------------------
 

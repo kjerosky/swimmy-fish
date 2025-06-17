@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5iqa4w6ppjer"
-path="res://.godot/imported/clown-fish-sprite-sheet.png-87958aa8690638959854df0af2a95876.ctex"
+path="res://.godot/imported/clown-fish-sprite-sheet.png-5202b91ae5cb6293010187f9c7540a8f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/clown-fish-sprite-sheet.png"
-dest_files=["res://.godot/imported/clown-fish-sprite-sheet.png-87958aa8690638959854df0af2a95876.ctex"]
+source_file="res://assets/images/clown-fish-sprite-sheet.png"
+dest_files=["res://.godot/imported/clown-fish-sprite-sheet.png-5202b91ae5cb6293010187f9c7540a8f.ctex"]
 
 [params]
 

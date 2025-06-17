@@ -5,13 +5,18 @@ extends Node2D
 @onready var obstacle_manager := $ObstacleManager
 @onready var scrolling_floor := $Floor
 @onready var player := $Player
+@onready var pre_game_display := $CanvasLayer/PreGameDisplay
+@onready var in_game_display := $CanvasLayer/InGameDisplay
+@onready var current_score_label := $CanvasLayer/InGameDisplay/CurrentScore
+@onready var post_game_display := $CanvasLayer/PostGameDisplay
 
 const MOVING_HORIZONTAL_SCROLL_SPEED := Constants.SCROLL_VELOCITY
 const SAVE_FILE_PATH := "user://scores.data"
 
 enum GameState {
-	WAITING_TO_START,
-	PLAYING,
+	WAITING_TO_START_GAME,
+	PLAYING_GAME,
+	GAME_ENDED,
 }
 
 var state: GameState
@@ -34,30 +39,46 @@ func restart() -> void:
 		high_score = current_score
 		save_scores()
 	
-	state = GameState.WAITING_TO_START
+	state = GameState.WAITING_TO_START_GAME
 	current_score = 0
 	
 	is_parallax_scroll_on = true
 	obstacle_manager.restart()
 	scrolling_floor.set_horizontal_scroll_speed(MOVING_HORIZONTAL_SCROLL_SPEED)
 	player.restart()
+	
+	pre_game_display.visible = true
+	in_game_display.visible = false
+	post_game_display.visible = false
+
 
 # ---------------------------------------------------------------------------
 
 func _physics_process(delta: float) -> void:
+	current_score_label.text = str(current_score)
+	current_score_label.modulate = Color.WHITE if current_score <= high_score else Color.GOLD
+	
 	if is_parallax_scroll_on:
 		parallax_background.scroll_offset += Vector2(Constants.SCROLL_VELOCITY * delta, 0.0)
 	
 	match state:
-		GameState.WAITING_TO_START:
+		GameState.WAITING_TO_START_GAME:
 			if Input.is_action_just_pressed("swim"):
-				state = GameState.PLAYING
+				state = GameState.PLAYING_GAME
 				
 				obstacle_manager.start_playing()
 				player.start_playing()
+				
+				pre_game_display.visible = false
+				in_game_display.visible = true
+				post_game_display.visible = false
 		
-		GameState.PLAYING:
+		GameState.PLAYING_GAME:
 			pass # nothing to do for now
+		
+		GameState.GAME_ENDED:
+			if Input.is_action_just_pressed("swim"):
+				restart()
 
 # ---------------------------------------------------------------------------
 
@@ -78,7 +99,11 @@ func stop_game() -> void:
 	player.die()
 	
 	await get_tree().create_timer(2.0).timeout
-	restart()
+	
+	state = GameState.GAME_ENDED
+	pre_game_display.visible = false
+	in_game_display.visible = false
+	post_game_display.visible = true
 
 # ---------------------------------------------------------------------------
 

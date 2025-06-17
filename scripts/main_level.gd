@@ -1,6 +1,7 @@
 class_name MainLevel
 extends Node2D
 
+@onready var parallax_background := $ParallaxBackground
 @onready var obstacle_manager := $ObstacleManager
 @onready var scrolling_floor := $Floor
 @onready var player := $Player
@@ -18,6 +19,8 @@ var state: GameState
 var current_score := 0
 var high_score := 0
 
+var is_parallax_scroll_on := true
+
 # ---------------------------------------------------------------------------
 
 func _ready() -> void:
@@ -34,13 +37,17 @@ func restart() -> void:
 	state = GameState.WAITING_TO_START
 	current_score = 0
 	
+	is_parallax_scroll_on = true
 	obstacle_manager.restart()
 	scrolling_floor.set_horizontal_scroll_speed(MOVING_HORIZONTAL_SCROLL_SPEED)
 	player.restart()
 
 # ---------------------------------------------------------------------------
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if is_parallax_scroll_on:
+		parallax_background.scroll_offset += Vector2(Constants.SCROLL_VELOCITY * delta, 0.0)
+	
 	match state:
 		GameState.WAITING_TO_START:
 			if Input.is_action_just_pressed("swim"):
@@ -65,6 +72,7 @@ func _on_player_player_hit_floor_during_play() -> void:
 # ---------------------------------------------------------------------------
 
 func stop_game() -> void:
+	is_parallax_scroll_on = false
 	obstacle_manager.stop_moving_and_spawning_obstacles()
 	scrolling_floor.set_horizontal_scroll_speed(0.0)
 	player.die()

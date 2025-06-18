@@ -13,6 +13,8 @@ extends Node2D
 @onready var in_game_display := $CanvasLayer/InGameDisplay
 @onready var current_score_label := $CanvasLayer/InGameDisplay/CurrentScore
 @onready var post_game_display := $CanvasLayer/PostGameDisplay
+@onready var final_score_label := $CanvasLayer/PostGameDisplay/FinalScoreLabel
+@onready var high_score_status_label := $CanvasLayer/PostGameDisplay/HighScoreStatusLabel
 
 const MOVING_HORIZONTAL_SCROLL_SPEED := Constants.SCROLL_VELOCITY
 const SAVE_FILE_PATH := "user://scores.data"
@@ -104,6 +106,20 @@ func stop_game() -> void:
 	
 	await get_tree().create_timer(2.0).timeout
 	state = GameState.GAME_ENDED
+	
+	final_score_label.text = "Final Score: " + str(current_score)
+	final_score_label.modulate = Color.GOLD if current_score > high_score else Color.WHITE
+	
+	if current_score > high_score:
+		high_score_status_label.text = "Your score is now the high score!"
+		high_score_status_label.modulate = Color.GOLD
+	else:
+		var points_to_high_score := high_score - current_score + 1
+		high_score_status_label.text = \
+			"You were " + str(points_to_high_score) + " " + \
+			("points" if points_to_high_score > 1 else "point") + \
+			" away from holding the high score."
+		high_score_status_label.modulate = Color.WHITE
 	
 	pre_game_display.visible = false
 	in_game_display.visible = false

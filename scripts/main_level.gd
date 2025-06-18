@@ -9,6 +9,7 @@ extends Node2D
 @onready var high_score_sound := $HighScoreSound
 @onready var dead_sound := $DeadSound
 @onready var pre_game_display := $CanvasLayer/PreGameDisplay
+@onready var high_score_label := $CanvasLayer/PreGameDisplay/HighScoreLabel
 @onready var in_game_display := $CanvasLayer/InGameDisplay
 @onready var current_score_label := $CanvasLayer/InGameDisplay/CurrentScore
 @onready var post_game_display := $CanvasLayer/PostGameDisplay
@@ -45,6 +46,8 @@ func restart() -> void:
 	obstacle_manager.restart()
 	scrolling_floor.set_horizontal_scroll_speed(MOVING_HORIZONTAL_SCROLL_SPEED)
 	player.restart()
+	
+	high_score_label.text = "High Score: " + str(high_score)
 	
 	pre_game_display.visible = true
 	in_game_display.visible = false

@@ -12,6 +12,7 @@ extends Node2D
 @onready var high_score_label := $CanvasLayer/PreGameDisplay/HighScoreLabel
 @onready var in_game_display := $CanvasLayer/InGameDisplay
 @onready var current_score_label := $CanvasLayer/InGameDisplay/CurrentScore
+@onready var high_score_achieved_label := $CanvasLayer/InGameDisplay/HighScoreAchievedLabel
 @onready var post_game_display := $CanvasLayer/PostGameDisplay
 @onready var final_score_label := $CanvasLayer/PostGameDisplay/FinalScoreLabel
 @onready var high_score_status_label := $CanvasLayer/PostGameDisplay/HighScoreStatusLabel
@@ -136,8 +137,19 @@ func _on_point_scored() -> void:
 	
 	if current_score == high_score + 1:
 		high_score_sound.play()
+		
+		high_score_achieved_label.scale = Vector2.ZERO
+		high_score_achieved_label.visible = true
+		var label_tween := create_tween()
+		label_tween.tween_property(high_score_achieved_label, "scale", Vector2.ONE, 1.0) \
+			.set_ease(Tween.EASE_OUT) \
+			.set_trans(Tween.TRANS_ELASTIC)
+		label_tween.tween_property(high_score_achieved_label, "scale", Vector2.ZERO, 0.5) \
+			.set_delay(0.5) \
+			.set_ease(Tween.EASE_IN) \
+			.set_trans(Tween.TRANS_QUAD)
+		label_tween.tween_callback(func(): high_score_achieved_label.visible = false)
 	else:
-		scored_point_sound.pitch_scale = [0.8, 0.9, 1.0, 1.1, 1.2].pick_random()
 		scored_point_sound.play()
 
 # ---------------------------------------------------------------------------
